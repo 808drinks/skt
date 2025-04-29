@@ -1,32 +1,223 @@
 
-<style>
-  label {
-    font-size: calc(10px + 1.5vw);
-    text-align: left;
-    margin-bottom: 0.5rem;
-    max-width: 100%;
-    display: block;
-  }
-  input[type="text"], input[type="tel"], select {
-    padding: 10px;
-    font-size: calc(10px + 1.2vw);
-    border: none;
-    border-radius: 6px;
-    width: 100%;
-    max-width: 100%;
-  }
-  .checkbox-group {
-    font-size: calc(10px + 1.2vw);
-  }
-  h1 {
-    font-size: calc(14px + 2vw);
-    max-width: 90%;
-    line-height: 1.4;
-  }
-  button {
-    font-size: calc(12px + 1.5vw);
-    max-width: 100%;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이벤트 참여</title>
+  <link href="https://cdn.jsdelivr.net/gh/webfontworld/gmarket/GmarketSans.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      color: white;
+      font-family: 'GmarketSansBold';
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 5vh 5vw;
+      text-align: center;
+    }
+    h1 {
+      font-size: 5.5vw;
+      color: #fff;
+      margin-bottom: 30px;
+      line-height: 1.4;
+    }
+    h1 span {
+      color: #ffe600;
+    }
+    form {
+      background-color: #2D74DA;
+      padding: 5vw;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    label {
+      font-size: 4.5vw;
+      text-align: left;
+    }
+    input[type="text"], input[type="tel"], select {
+      padding: 10px;
+      font-size: 2.7vw;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+    }
+    .helper {
+      font-size: 2.5vw;
+      color: #f0f0f0;
+      text-align: left;
+    }
+    .hidden {
+      display: none;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 4vw;
+    }
+    .checkbox-group input {
+      width: 20px;
+      height: 20px;
+    }
+    button {
+      padding: 12px;
+      font-size: 4.5vw;
+      background-color: #000;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    @media (min-width: 768px) {
+      h1 { font-size: 2rem; }
+      label { font-size: 1.2rem; }
+      input, select { font-size: 0.9rem; }
+      .checkbox-group { font-size: 1rem; }
+      button { font-size: 1.1rem; }
+      .helper { font-size: 0.75rem; }
+    }
+  
 
+    label {
+      font-size: calc(10px + 1.5vw);
+      text-align: left;
+      margin-bottom: 0.7rem;
+      max-width: 100%;
+      display: block;
+    }
+    input[type="text"], input[type="tel"], select {
+      font-size: calc(10px + 1.2vw);
+      max-width: 100%;
+    }
+    .checkbox-group {
+      font-size: calc(10px + 1.2vw);
+    }
+    h1 {
+      font-size: calc(14px + 2vw);
+      max-width: 90%;
+    }
+    button {
+      font-size: calc(12px + 1.5vw);
+      max-width: 100%;
+    }
+</style>
 </head>
+<body>
+  <h1>이벤트 참여정보 남기면 <span>유심비 8,800원 100% 지원!</span><br>다음날 바로 지급됩니다.</h1>
+  <form id="eventForm">
+    <div id="step1">
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name" required pattern="^[가-힣a-zA-Z]+$" title="한글 또는 영문만 입력 가능합니다." />
+    </div>
+    <div id="step2" class="hidden">
+      <label for="phone">핸드폰 번호</label>
+      <input type="tel" id="phone" name="phone" required pattern="^[0-9]+$" title="숫자만 입력하세요." />
+      <div class="helper">※ (-없이) 숫자만 입력</div>
+    </div>
+    <div id="step3" class="hidden">
+      <label for="account">계좌번호</label>
+      <input type="text" id="account" name="account" required pattern="^[0-9]+$" title="숫자만 입력하세요." />
+      <div class="helper">※ (-없이) 숫자만 입력</div>
+
+      <label for="bank">은행 선택</label>
+      <select id="bank" name="bank" required onchange="toggleOtherBank(this.value)">
+        <option value="">은행을 선택하세요</option>
+        <option value="국민은행">국민은행</option>
+        <option value="신한은행">신한은행</option>
+        <option value="우리은행">우리은행</option>
+        <option value="하나은행">하나은행</option>
+        <option value="농협">농협</option>
+        <option value="카카오뱅크">카카오뱅크</option>
+        <option value="케이뱅크">케이뱅크</option>
+        <option value="기업은행">기업은행</option>
+        <option value="SC제일은행">SC제일은행</option>
+        <option value="토스뱅크">토스뱅크</option>
+        <option value="기타">기타 (직접입력)</option>
+      </select>
+      <input type="text" id="otherBank" class="hidden" placeholder="은행명을 입력하세요" />
+
+      <div class="checkbox-group">
+        <input type="checkbox" id="agree" required />
+        <label for="agree">개인정보 수집 동의 (유심비 지급 이벤트 용도)</label>
+      </div>
+      <button type="submit">제출</button>
+    </div>
+  </form>
+
+  <script>
+    const nameInput = document.getElementById('name');
+    const phoneInput = document.getElementById('phone');
+    const step2 = document.getElementById('step2');
+    const step3 = document.getElementById('step3');
+
+    nameInput.addEventListener('input', () => {
+      if (nameInput.value.trim() !== '') step2.classList.remove('hidden');
+    });
+
+    phoneInput.addEventListener('input', () => {
+      if (phoneInput.value.trim() !== '') step3.classList.remove('hidden');
+    });
+
+    function toggleOtherBank(value) {
+      const otherBankInput = document.getElementById('otherBank');
+      if (value === '기타') {
+        otherBankInput.classList.remove('hidden');
+        otherBankInput.required = true;
+      } else {
+        otherBankInput.classList.add('hidden');
+        otherBankInput.required = false;
+      }
+    }
+
+    document.getElementById('eventForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      if (!document.getElementById('agree').checked) {
+        alert('개인정보 수집에 동의해야 합니다.');
+        return;
+      }
+
+      const bankDropdown = document.getElementById('bank');
+      let bankValue = bankDropdown.value;
+      if (bankValue === '기타') {
+        bankValue = document.getElementById('otherBank').value.trim();
+      }
+
+      if (!bankValue) {
+        alert('은행명을 정확히 입력해주세요.');
+        return;
+      }
+
+      const data = {
+        name: nameInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        account: document.getElementById('account').value.trim(),
+        bank: bankValue,
+        agreement: "동의함",
+        timestamp: new Date().toLocaleString('ko-KR')
+      };
+
+      fetch('https://script.google.com/macros/s/AKfycbxRVmUqTRZvOaet_3EifV1Wyrmbq8KxJRUy7jWSzLhjMepMRP_PjQhmZ07KEykYf6m00A/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      alert('제출이 완료되었습니다!');
+      document.getElementById('eventForm').reset();
+      step2.classList.add('hidden');
+      step3.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>
