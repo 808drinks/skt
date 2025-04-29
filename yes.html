@@ -61,11 +61,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 4vw;
+      font-size: 3vw;
     }
     .checkbox-group input {
       width: 20px;
       height: 20px;
+    }
+    .bottom10 {
+      margin-bottom: 10px;
+    }
+    .bottom15 {
+      margin-bottom: 15px;
     }
     button {
       padding: 12px;
@@ -88,20 +94,20 @@
   </style>
 </head>
 <body>
-  <h1>이벤트 참여정보 남기면 <span>유심비 8,800원 100% 지원!</span><br>다음날 바로 지급됩니다.</h1>
+  <h1>이벤트 참여정보 남기면 <span>유심비 8,800원 100% 지급!</span><br>다음날 바로 지급됩니다.</h1>
   <form id="eventForm">
     <div id="step1">
-      <label for="name">이름</label>
+      <label class="bottom15" for="name">이름</label>
       <input type="text" id="name" name="name" required pattern="^[가-힣a-zA-Z]+$" title="한글 또는 영문만 입력 가능합니다." />
     </div>
     <div id="step2" class="hidden">
-      <label for="phone">핸드폰 번호</label>
-      <input type="tel" id="phone" name="phone" required pattern="^[0-9]+$" title="숫자만 입력하세요." />
+      <label class="bottom15" for="phone">핸드폰 번호</label>
+      <input class="bottom10" type="tel" id="phone" name="phone" required pattern="^[0-9]+$" title="숫자만 입력하세요." />
       <div class="helper">※ (-없이) 숫자만 입력</div>
     </div>
     <div id="step3" class="hidden">
-      <label for="account">계좌번호</label>
-      <input type="text" id="account" name="account" required pattern="^[0-9]+$" title="숫자만 입력하세요." />
+      <label class="bottom15" for="account">계좌번호</label>
+      <input class="bottom10" type="text" id="account" name="account" required pattern="^[0-9]+$" title="숫자만 입력하세요." />
       <div class="helper">※ (-없이) 숫자만 입력</div>
 
       <label for="bank">은행 선택</label>
