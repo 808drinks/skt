@@ -107,16 +107,16 @@
       <label for="bank">은행 선택</label>
       <select id="bank" name="bank" required onchange="toggleOtherBank(this.value)">
         <option value="">은행을 선택하세요</option>
-        <option>국민은행</option>
-        <option>신한은행</option>
-        <option>우리은행</option>
-        <option>하나은행</option>
-        <option>농협</option>
-        <option>카카오뱅크</option>
-        <option>케이뱅크</option>
-        <option>기업은행</option>
-        <option>SC제일은행</option>
-        <option>토스뱅크</option>
+        <option value="국민은행">국민은행</option>
+        <option value="신한은행">신한은행</option>
+        <option value="우리은행">우리은행</option>
+        <option value="하나은행">하나은행</option>
+        <option value="농협">농협</option>
+        <option value="카카오뱅크">카카오뱅크</option>
+        <option value="케이뱅크">케이뱅크</option>
+        <option value="기업은행">기업은행</option>
+        <option value="SC제일은행">SC제일은행</option>
+        <option value="토스뱅크">토스뱅크</option>
         <option value="기타">기타 (직접입력)</option>
       </select>
       <input type="text" id="otherBank" class="hidden" placeholder="은행명을 입력하세요" />
@@ -155,44 +155,45 @@
     }
 
     document.getElementById('eventForm').addEventListener('submit', function(e) {
-  e.preventDefault();
+      e.preventDefault();
 
-  if (!document.getElementById('agree').checked) {
-    alert('개인정보 수집에 동의해야 합니다.');
-    return;
-  }
+      if (!document.getElementById('agree').checked) {
+        alert('개인정보 수집에 동의해야 합니다.');
+        return;
+      }
 
-  const bankDropdown = document.getElementById('bank');
-  const bankValue = bankDropdown.value === '기타'
-    ? document.getElementById('otherBank').value.trim()
-    : bankDropdown.value;
+      const bankDropdown = document.getElementById('bank');
+      let bankValue = bankDropdown.value;
+      if (bankValue === '기타') {
+        bankValue = document.getElementById('otherBank').value.trim();
+      }
 
-  if (!bankValue) {
-    alert('은행명을 정확히 입력해주세요.');
-    return;
-  }
+      if (!bankValue) {
+        alert('은행명을 정확히 입력해주세요.');
+        return;
+      }
 
-  const data = {
-    name: nameInput.value.trim(),
-    phone: phoneInput.value.trim(),
-    account: document.getElementById('account').value.trim(),
-    bank: bankValue,
-    agreement: "동의함",
-    timestamp: new Date().toLocaleString('ko-KR')
-  };
+      const data = {
+        name: nameInput.value.trim(),
+        phone: phoneInput.value.trim(),
+        account: document.getElementById('account').value.trim(),
+        bank: bankValue,
+        agreement: "동의함",
+        timestamp: new Date().toLocaleString('ko-KR')
+      };
 
-  fetch('https://script.google.com/macros/s/AKfycbwRjQfN6_c6MVGmUXBWb69Ul1XgrtjY5LqCKyIGc5EHTVoHjzE-TU9G2LlM8CJI_PhQuQ/exec', {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
+      fetch('https://script.google.com/macros/s/AKfycbwRjQfN6_c6MVGmUXBWb69Ul1XgrtjY5LqCKyIGc5EHTVoHjzE-TU9G2LlM8CJI_PhQuQ/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
-  alert('제출이 완료되었습니다!');
-  document.getElementById('eventForm').reset();
-  step2.classList.add('hidden');
-  step3.classList.add('hidden');
-});
+      alert('제출이 완료되었습니다!');
+      document.getElementById('eventForm').reset();
+      step2.classList.add('hidden');
+      step3.classList.add('hidden');
+    });
   </script>
 </body>
 </html>
