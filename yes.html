@@ -155,36 +155,44 @@
     }
 
     document.getElementById('eventForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      if (!document.getElementById('agree').checked) {
-        alert('개인정보 수집에 동의해야 합니다.');
-        return;
-      }
+  e.preventDefault();
 
-      const bankDropdown = document.getElementById('bank');
-      const bank = bankDropdown.value === '기타' ? document.getElementById('otherBank').value : bankDropdown.value;
+  if (!document.getElementById('agree').checked) {
+    alert('개인정보 수집에 동의해야 합니다.');
+    return;
+  }
 
-      const data = {
-        name: nameInput.value,
-        phone: phoneInput.value,
-        account: document.getElementById('account').value,
-        bank: bank,
-        agreement: "동의함",
-        timestamp: new Date().toLocaleString('ko-KR')
-      };
+  const bankDropdown = document.getElementById('bank');
+  const bankValue = bankDropdown.value === '기타'
+    ? document.getElementById('otherBank').value.trim()
+    : bankDropdown.value;
 
-      fetch('https://script.google.com/macros/s/AKfycbxRVmUqTRZvOaet_3EifV1Wyrmbq8KxJRUy7jWSzLhjMepMRP_PjQhmZ07KEykYf6m00A/exec', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+  if (!bankValue) {
+    alert('은행명을 정확히 입력해주세요.');
+    return;
+  }
 
-      alert('제출이 완료되었습니다!');
-      document.getElementById('eventForm').reset();
-      step2.classList.add('hidden');
-      step3.classList.add('hidden');
-    });
+  const data = {
+    name: nameInput.value.trim(),
+    phone: phoneInput.value.trim(),
+    account: document.getElementById('account').value.trim(),
+    bank: bankValue,
+    agreement: "동의함",
+    timestamp: new Date().toLocaleString('ko-KR')
+  };
+
+  fetch('https://script.google.com/macros/s/AKfycbxRVmUqTRZvOaet_3EifV1Wyrmbq8KxJRUy7jWSzLhjMepMRP_PjQhmZ07KEykYf6m00A/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  alert('제출이 완료되었습니다!');
+  document.getElementById('eventForm').reset();
+  step2.classList.add('hidden');
+  step3.classList.add('hidden');
+});
   </script>
 </body>
 </html>
