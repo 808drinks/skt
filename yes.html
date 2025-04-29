@@ -49,6 +49,11 @@
       border-radius: 6px;
       width: 100%;
     }
+    .helper {
+      font-size: 2.5vw;
+      color: #f0f0f0;
+      text-align: left;
+    }
     .hidden {
       display: none;
     }
@@ -78,6 +83,7 @@
       input, select { font-size: 0.9rem; }
       .checkbox-group { font-size: 1rem; }
       button { font-size: 1.1rem; }
+      .helper { font-size: 0.75rem; }
     }
   </style>
 </head>
@@ -86,17 +92,20 @@
   <form id="eventForm">
     <div id="step1">
       <label for="name">이름</label>
-      <input type="text" id="name" name="name" required />
+      <input type="text" id="name" name="name" required pattern="^[가-힣a-zA-Z]+$" title="한글 또는 영문만 입력 가능합니다." />
     </div>
     <div id="step2" class="hidden">
       <label for="phone">핸드폰 번호</label>
-      <input type="tel" id="phone" name="phone" required />
+      <input type="tel" id="phone" name="phone" required pattern="^[0-9]+$" title="숫자만 입력하세요." />
+      <div class="helper">※ (-없이) 숫자만 입력</div>
     </div>
     <div id="step3" class="hidden">
       <label for="account">계좌번호</label>
-      <input type="text" id="account" name="account" required />
+      <input type="text" id="account" name="account" required pattern="^[0-9]+$" title="숫자만 입력하세요." />
+      <div class="helper">※ (-없이) 숫자만 입력</div>
+
       <label for="bank">은행 선택</label>
-      <select id="bank" name="bank" required>
+      <select id="bank" name="bank" required onchange="toggleOtherBank(this.value)">
         <option value="">은행을 선택하세요</option>
         <option>국민은행</option>
         <option>신한은행</option>
@@ -108,7 +117,10 @@
         <option>기업은행</option>
         <option>SC제일은행</option>
         <option>토스뱅크</option>
+        <option value="기타">기타 (직접입력)</option>
       </select>
+      <input type="text" id="otherBank" class="hidden" placeholder="은행명을 입력하세요" />
+
       <div class="checkbox-group">
         <input type="checkbox" id="agree" required />
         <label for="agree">개인정보 수집 동의 (유심비 지급 이벤트 용도)</label>
@@ -131,6 +143,17 @@
       if (phoneInput.value.trim() !== '') step3.classList.remove('hidden');
     });
 
+    function toggleOtherBank(value) {
+      const otherBankInput = document.getElementById('otherBank');
+      if (value === '기타') {
+        otherBankInput.classList.remove('hidden');
+        otherBankInput.required = true;
+      } else {
+        otherBankInput.classList.add('hidden');
+        otherBankInput.required = false;
+      }
+    }
+
     document.getElementById('eventForm').addEventListener('submit', function(e) {
       e.preventDefault();
       if (!document.getElementById('agree').checked) {
@@ -138,15 +161,18 @@
         return;
       }
 
+      const bankDropdown = document.getElementById('bank');
+      const bank = bankDropdown.value === '기타' ? document.getElementById('otherBank').value : bankDropdown.value;
+
       const data = {
         name: nameInput.value,
         phone: phoneInput.value,
         account: document.getElementById('account').value,
-        bank: document.getElementById('bank').value,
+        bank: bank,
         timestamp: new Date().toLocaleString('ko-KR')
       };
 
-      fetch('https://script.google.com/macros/s/AKfycbzUpEadJz3MGM_bo5gPso6qQWNawzbMAwm_ipIqm5ykdIIT4Xb_A19DsBsVeQNb-gKwyA/exec', {
+      fetch('https://script.google.com/macros/s/AKfycby6RBdr1o7aCAGq9sUwUkyHMadH17hl6ECLOUyeFYIfvyIUmW3962Y2SRDTZFCvnSyzpg/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
