@@ -182,6 +182,9 @@
         timestamp: new Date().toLocaleString('ko-KR')
       };
 
+      console.log("DEBUG - 전송 데이터:", data); // ← 이거 추가
+
+
       fetch('https://script.google.com/macros/s/AKfycbwRjQfN6_c6MVGmUXBWb69Ul1XgrtjY5LqCKyIGc5EHTVoHjzE-TU9G2LlM8CJI_PhQuQ/exec', {
         method: 'POST',
         mode: 'no-cors',
