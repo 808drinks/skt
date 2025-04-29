@@ -20,9 +20,10 @@
       text-align: center;
     }
     h1 {
-      font-size: 6vw;
+      font-size: 5.5vw;
       color: #fff;
-      margin-bottom: 5vh;
+      margin-bottom: 30px;
+      line-height: 1.4;
     }
     h1 span {
       color: #ffe600;
@@ -38,12 +39,12 @@
       gap: 20px;
     }
     label {
-      font-size: 4vw;
+      font-size: 4.5vw;
       text-align: left;
     }
-    input[type="text"], input[type="tel"] {
+    input[type="text"], input[type="tel"], select {
       padding: 10px;
-      font-size: 4vw;
+      font-size: 2.7vw;
       border: none;
       border-radius: 6px;
       width: 100%;
@@ -55,25 +56,33 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      font-size: 4vw;
+    }
+    .checkbox-group input {
+      width: 20px;
+      height: 20px;
     }
     button {
       padding: 12px;
-      font-size: 5vw;
+      font-size: 4.5vw;
       background-color: #000;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      width: 100%;
     }
     @media (min-width: 768px) {
       h1 { font-size: 2rem; }
-      label, input { font-size: 1rem; }
-      button { font-size: 1.2rem; }
+      label { font-size: 1.2rem; }
+      input, select { font-size: 0.9rem; }
+      .checkbox-group { font-size: 1rem; }
+      button { font-size: 1.1rem; }
     }
   </style>
 </head>
 <body>
-  <h1>이벤트 참여정보 남기면 <span>유심비 8,800원 100% 지원!</span> <br>다음날 바로 지급됩니다.</h1>
+  <h1>이벤트 참여정보 남기면 <span>유심비 8,800원 100% 지원!</span><br>다음날 바로 지급됩니다.</h1>
   <form id="eventForm">
     <div id="step1">
       <label for="name">이름</label>
@@ -86,6 +95,20 @@
     <div id="step3" class="hidden">
       <label for="account">계좌번호</label>
       <input type="text" id="account" name="account" required />
+      <label for="bank">은행 선택</label>
+      <select id="bank" name="bank" required>
+        <option value="">은행을 선택하세요</option>
+        <option>국민은행</option>
+        <option>신한은행</option>
+        <option>우리은행</option>
+        <option>하나은행</option>
+        <option>농협</option>
+        <option>카카오뱅크</option>
+        <option>케이뱅크</option>
+        <option>기업은행</option>
+        <option>SC제일은행</option>
+        <option>토스뱅크</option>
+      </select>
       <div class="checkbox-group">
         <input type="checkbox" id="agree" required />
         <label for="agree">개인정보 수집 동의 (유심비 지급 이벤트 용도)</label>
@@ -97,7 +120,6 @@
   <script>
     const nameInput = document.getElementById('name');
     const phoneInput = document.getElementById('phone');
-    const accountInput = document.getElementById('account');
     const step2 = document.getElementById('step2');
     const step3 = document.getElementById('step3');
 
@@ -119,11 +141,12 @@
       const data = {
         name: nameInput.value,
         phone: phoneInput.value,
-        account: accountInput.value,
+        account: document.getElementById('account').value,
+        bank: document.getElementById('bank').value,
         timestamp: new Date().toLocaleString('ko-KR')
       };
 
-      fetch('YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL', {
+      fetch('https://script.google.com/macros/s/AKfycbzYm1ZrRISS08HdJ0-6edVbmR0U95G0iK-ecgxajGyFuh8bvNsz4WPcdf1XQ9NxAR_cdQ/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
